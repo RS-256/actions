@@ -1,0 +1,210 @@
+# 日本語辞書。キー構成は en_us.yaml と一致させる（テストで検証）。
+# ui.*   画面のラベル
+# help.* フィールドの補足・バナー
+# yaml.* 生成物に埋め込むコメント
+ui:
+  app:
+    toolName: Actions Templates
+    title: GitHub Actions テンプレート
+    lede: 必要なワークフローを選んで設定すると、そのまま置ける YAML が出てきます。
+    reset: 初期状態に戻す
+  header:
+    theme: テーマ切り替え
+  footer:
+    copyright: © 2026 rs256 / やまゆー
+    parent: rs256.net
+  language:
+    label: 言語
+    en_us: English
+    ja_jp: 日本語
+  picker:
+    title: 生成するファイル
+    hint: 選んだものだけが下に設定として出ます。
+  section:
+    toggle: 設定の表示を切り替える
+    offHint: このファイルは OFF です。「生成するファイル」で有効にしてください。
+    common:
+      title: 共通設定
+      hint: 各ワークフローは、個別指定しない限りここに従います。
+    ci:
+      title: ci
+      hint: PR のたびに走らせる検査。有効にしたジョブが並列で動きます。
+    deploy:
+      title: deploy
+      hint: push でビルドして、結果を公開します。
+    dependabot:
+      title: dependabot
+      hint: 監視する対象と更新の頻度を決めます。
+  group:
+    jobs: ジョブ
+    trigger: トリガー
+    build: ビルド
+    ecosystems: 監視する ecosystem
+    directories: ディレクトリ
+    schedule: スケジュール
+    options: オプション
+    autoMerge: 自動マージ
+  field:
+    packageManager: パッケージマネージャ
+    nodeVersion: Node バージョン
+    nodeVersions: Node バージョン
+    defaultBranch: 既定ブランチ
+    timezone: タイムゾーン
+    targetBranches: 対象ブランチ
+    prTypes: PR のイベント
+    concurrency: 実行の重複をキャンセル
+    target: デプロイ先
+    framework: フレームワーク
+    branches: トリガーのブランチ
+    manualDispatch: 手動実行を許可
+    installCommand: インストールコマンド
+    buildCommand: ビルドコマンド
+    outputDir: 出力ディレクトリ
+    cache: 依存関係をキャッシュ
+    deployCommand: デプロイコマンド
+    secrets: Secrets
+    directory: ディレクトリ
+    groupMinorPatch: マイナー / パッチをまとめる
+    groupName: グループ名
+    interval: 更新頻度
+    day: 曜日
+    time: 時刻
+    openPullRequestsLimit: PR の同時オープン上限
+    labels: ラベル
+    commitMessagePrefix: コミットメッセージの接頭辞
+    ignoreMajor: メジャー更新を無視
+    autoMergeEnabled: 検査が通ったらマージ
+    strategy: 方式
+    updateTypes: 対象の更新
+    mergeMethod: マージ方法
+    approve: マージ前に approve
+    generatedBy: 生成元の 1 行
+  option:
+    target:
+      github-pages: GitHub Pages
+      custom: カスタムコマンド
+    framework:
+      none: なし（汎用）
+      astro: Astro
+    strategy:
+      same-workflow: same-workflow（リポジトリ設定不要）
+      branch-protection: branch-protection
+    nodeVersion:
+      nvmrc: .nvmrc に従う
+    commentLanguage:
+      ui: "コメント: UI に合わせる"
+      en_us: "Comments: English"
+      ja_jp: "コメント: 日本語"
+      none: コメントなし
+  inherit:
+    shared: 共通
+    hint: 共通設定に従っています。
+  tagInput:
+    placeholder: 入力して Enter
+    remove: "{value} を削除"
+  ecosystem:
+    more: その他 {count} 件
+    less: 折りたたむ
+  preview:
+    empty: 生成するファイルを 1 つ以上選択してください。
+    copy: このファイルをコピー
+    copied: コピーしました
+    download: このファイルを保存
+    downloadAll: すべて zip でダウンロード
+    share: 共有リンク
+    shared: リンクをコピーしました
+help:
+  ci:
+    prTypes: 既定の 3 つ（opened / synchronize / reopened）は GitHub の初期動作と同じなので、変更したときだけ YAML に書き出します。
+    nodeVersions: 2 つ以上選ぶと strategy.matrix になります。
+    jobs: ジョブ名は固定です。OFF にしたジョブはファイルからも auto-merge の needs からも消えます。
+  deploy:
+    pagesSource: 初回の実行前に、リポジトリの Settings > Pages > Source を "GitHub Actions" にしてください。
+    installCommand: パッケージマネージャから自動導出します。空のままにすると追随します。
+    framework: Astro を選ぶと、setup-node 〜 upload-pages-artifact が withastro/action の 1 ステップに置き換わります。
+    secrets: Settings > Secrets and variables > Actions への登録が必要です。デプロイステップの env に渡されます。
+    noCommand: デプロイコマンドが空のため、生成されるステップは何もしません。
+  dependabot:
+    directory: マニフェストの場所。リポジトリルートからの相対パスです。
+    limitZero: 上限 0 はバージョン更新の停止を意味します。セキュリティ更新の PR は引き続き作られます。
+    groupsAutoMerge: まとめられた更新は 1 本の PR になるため、1 度のビルド通過でまとめてマージされます。
+    ignoreMajor: メジャー更新の PR 自体が作られなくなります。自動マージの対象から外すより強い設定です。
+  autoMerge:
+    needsDependabot: dependabot を有効にしてください。
+    sameWorkflow: |-
+      自動マージは ci.yml のジョブとして生成され、needs: [{jobs}] で検査の完了を待ちます。
+      ruleset やブランチ保護の設定は要りません。
+    noChecks: 検査ジョブが 1 つも有効になっていないため、待つ対象がなく PR が開いた直後にマージされます。
+    branchProtection: |-
+      この方式はリポジトリ側の設定に依存します。
+      1. Settings > General > Allow auto-merge が有効であること。
+      2. ブランチ保護ルール（またはルールセット）に必須ステータスチェックを設定すること。名前は ci.yml のジョブ名を使います。
+      3. approve を使う場合は Settings > Actions > Allow GitHub Actions to create and approve pull requests を確認すること。
+    branchProtectionNoCi: PR 時にビルドするワークフローが無いため、マージ待機の対象となるチェックがありません。
+    major: major を含めると、破壊的変更がレビューなしで既定ブランチに入ります。
+    noUpdateTypes: 対象の更新が 1 つも選ばれていないため、マージのステップは実行されません。
+    approve: approve が必要なのは、ブランチ保護ルールがレビューを要求している場合だけです。
+  output:
+    generatedBy: 各ファイルの先頭に、このツールで生成したことを示す 1 行を入れます。
+yaml:
+  common:
+    generatedBy: https://rs256.net/actions/ で生成。自由に編集してよい。
+    permissions: 既定は権限なし。各ジョブで必要な分だけ付与する。
+  steps:
+    pnpmSetup: pnpm/action-setup はバージョンを package.json の packageManager フィールドから読む。
+  ci:
+    header: |-
+      PR ごとに走らせる検査。ジョブ間に依存を張っていないため、
+      1 回の実行で失敗をまとめて確認できる。
+      https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax
+    job:
+      lint: 他の検査を止めずにスタイルの問題を報告する。
+      test: テストを実行する。
+      build: 成果物がビルドできることを確認する。
+  deploy:
+    headerPages: |-
+      push でビルドし、GitHub Pages で公開する。
+      https://docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+    headerCustom: |-
+      push でビルドし、任意のデプロイコマンドに渡す。
+      https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax
+    pagesPermissions: pages:write で成果物を公開し、id-token:write で deploy-pages が OIDC 認証する。
+    pagesSetup: Settings > Pages > Source を "GitHub Actions" にしておく必要がある。
+    secrets: Settings > Secrets and variables > Actions に登録しておく。
+  autoMerge:
+    header: |-
+      検査が通った Dependabot の PR を自動でマージする。
+      https://docs.github.com/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+    jobSameWorkflow: 上の検査がすべて通り、かつ Dependabot の PR のときだけマージする。
+    jobNoChecks: |-
+      検査ジョブが無いため待つ対象がない。PR が開いた直後にマージされる。
+    jobBranchProtection: |-
+      GitHub の auto-merge に載せ、必須ステータスチェックの通過まで待たせる。
+      Allow auto-merge と対象ブランチのブランチ保護ルールが前提。
+    permissions: Dependabot 起点の実行では GITHUB_TOKEN が既定 read-only のため、ここで明示的に付与する。
+    skipMajor: メジャー更新は自動マージせず人力レビューに回す。
+    approve: ブランチ保護ルールが approve を要求している場合にのみ必要。
+  dependabot:
+    header: |-
+      依存関係の自動更新設定。
+      https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+    groups: まとめられた更新は 1 本の PR になるため、1 度のビルド通過でまとめてマージされる。
+    limitZero: 0 はバージョン更新の停止を意味する。セキュリティ更新の PR は引き続き作られる。
+    entry:
+      npm: Node.js の依存関係（package.json）。
+      github-actions: .github/workflows で使っているアクション。
+      pip: Python の依存関係（requirements.txt / pyproject.toml）。
+      uv: uv が管理する Python の依存関係（uv.lock）。
+      gradle: Java / Kotlin の依存関係（Gradle）。
+      maven: Java の依存関係（pom.xml）。
+      cargo: Rust のクレート（Cargo.toml）。
+      gomod: Go のモジュール（go.mod）。
+      composer: PHP のパッケージ（composer.json）。
+      bundler: Ruby の gem（Gemfile）。
+      nuget: .NET のパッケージ（*.csproj）。
+      docker: Dockerfile が参照するベースイメージ。
+      terraform: Terraform のプロバイダとモジュール。
+      swift: Swift のパッケージ（Package.swift）。
+      pub: Dart / Flutter のパッケージ（pubspec.yaml）。
+      mix: Elixir のパッケージ（mix.exs）。
+      devcontainers: Dev container の feature（.devcontainer）。

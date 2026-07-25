@@ -1,0 +1,210 @@
+# English dictionary. Keys must stay in sync with ja_jp.yaml (checked by a test).
+# ui.*   interface labels
+# help.* field help and banners
+# yaml.* comments embedded in the generated files
+ui:
+  app:
+    toolName: Actions Templates
+    title: GitHub Actions templates
+    lede: Pick the workflows you need, choose the options, and copy out YAML you can commit as is.
+    reset: Reset
+  header:
+    theme: Switch theme
+  footer:
+    copyright: © 2026 rs256 / やまゆー
+    parent: rs256.net
+  language:
+    label: Language
+    en_us: English
+    ja_jp: 日本語
+  picker:
+    title: Files to generate
+    hint: Only the files you pick appear as settings below.
+  section:
+    toggle: Show or hide these settings
+    offHint: This file is off. Turn it on under "Files to generate".
+    common:
+      title: Shared settings
+      hint: Every workflow follows these unless a field overrides them.
+    ci:
+      title: ci
+      hint: Checks to run on every pull request. Enabled jobs run in parallel.
+    deploy:
+      title: deploy
+      hint: Builds on push and publishes the result.
+    dependabot:
+      title: dependabot
+      hint: Chooses what to watch and how often updates arrive.
+  group:
+    jobs: Jobs
+    trigger: Trigger
+    build: Build
+    ecosystems: Ecosystems to watch
+    directories: Directories
+    schedule: Schedule
+    options: Options
+    autoMerge: Auto-merge
+  field:
+    packageManager: Package manager
+    nodeVersion: Node version
+    nodeVersions: Node versions
+    defaultBranch: Default branch
+    timezone: Time zone
+    targetBranches: Target branches
+    prTypes: Pull request events
+    concurrency: Cancel superseded runs
+    target: Deploy target
+    framework: Framework preset
+    branches: Trigger branches
+    manualDispatch: Allow manual runs
+    installCommand: Install command
+    buildCommand: Build command
+    outputDir: Output directory
+    cache: Cache dependencies
+    deployCommand: Deploy command
+    secrets: Secrets
+    directory: Directory
+    groupMinorPatch: Group minor and patch
+    groupName: Group name
+    interval: Update interval
+    day: Day
+    time: Time
+    openPullRequestsLimit: Open pull request limit
+    labels: Labels
+    commitMessagePrefix: Commit message prefix
+    ignoreMajor: Ignore major updates
+    autoMergeEnabled: Merge once the checks pass
+    strategy: Strategy
+    updateTypes: Update types
+    mergeMethod: Merge method
+    approve: Approve before merging
+    generatedBy: Generated-by
+  option:
+    target:
+      github-pages: GitHub Pages
+      custom: Custom command
+    framework:
+      none: None (generic)
+      astro: Astro
+    strategy:
+      same-workflow: same-workflow (no repository setup)
+      branch-protection: branch-protection
+    nodeVersion:
+      nvmrc: Follow .nvmrc
+    commentLanguage:
+      ui: "Comments: follow the UI"
+      en_us: "Comments: English"
+      ja_jp: "Comments: 日本語"
+      none: No comments
+  inherit:
+    shared: shared
+    hint: Following the shared settings.
+  tagInput:
+    placeholder: Add and press Enter
+    remove: Remove {value}
+  ecosystem:
+    more: Other {count}
+    less: Hide the rest
+  preview:
+    empty: Pick at least one file to generate.
+    copy: Copy this file
+    copied: Copied
+    download: Download this file
+    downloadAll: Download all (zip)
+    share: Share link
+    shared: Link copied
+help:
+  ci:
+    prTypes: The default set (opened / synchronize / reopened) is what GitHub already does, so it is only written out when you change it.
+    nodeVersions: Selecting two or more builds a strategy.matrix.
+    jobs: Job names are fixed. Disabled jobs disappear from the file and from the auto-merge needs list.
+  deploy:
+    pagesSource: Set Settings > Pages > Source to "GitHub Actions" in the repository before the first run.
+    installCommand: Derived from the package manager. Leave it empty to keep it in sync.
+    framework: Astro replaces setup-node through upload-pages-artifact with a single withastro/action step.
+    secrets: Register these under Settings > Secrets and variables > Actions. They are passed to the deploy step as env values.
+    noCommand: No deploy command is set, so the generated step does nothing useful yet.
+  dependabot:
+    directory: Where the manifest lives, relative to the repository root.
+    limitZero: A limit of 0 stops version updates entirely. Security updates still open pull requests.
+    groupsAutoMerge: Grouped updates arrive as one pull request, so a single green run merges all of them at once.
+    ignoreMajor: Dependabot stops opening major-update pull requests at all, which is stricter than leaving them out of auto-merge.
+  autoMerge:
+    needsDependabot: Enable dependabot first.
+    sameWorkflow: |-
+      The auto-merge job is generated inside ci.yml with needs: [{jobs}], so it waits for those checks.
+      No ruleset or branch protection rule is required.
+    noChecks: No check job is enabled, so there is nothing to wait for and the pull request is merged as soon as it opens.
+    branchProtection: |-
+      This strategy relies on repository settings:
+      1. Settings > General > Allow auto-merge is enabled.
+      2. A branch protection rule (or ruleset) lists the required status checks - use the job names from ci.yml.
+      3. For approvals, check Settings > Actions > Allow GitHub Actions to create and approve pull requests.
+    branchProtectionNoCi: No workflow builds the pull request, so there is no check for auto-merge to wait on.
+    major: Including major means breaking changes can reach the default branch without review.
+    noUpdateTypes: No update type is selected, so the merge step never runs.
+    approve: The approval is only needed when a branch protection rule requires one.
+  output:
+    generatedBy: Adds one line at the top of every file pointing back at this tool.
+yaml:
+  common:
+    generatedBy: Generated by https://rs256.net/actions/ - edit freely.
+    permissions: No permissions by default; every job grants only what it needs.
+  steps:
+    pnpmSetup: pnpm/action-setup takes the version from the packageManager field in package.json.
+  ci:
+    header: |-
+      Checks that run on every pull request. The jobs are independent so one run
+      reports every failure at once.
+      https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax
+    job:
+      lint: Reports style problems without holding up the other checks.
+      test: Runs the test suite.
+      build: Confirms the project still builds.
+  deploy:
+    headerPages: |-
+      Builds on push and publishes the result with GitHub Pages.
+      https://docs.github.com/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+    headerCustom: |-
+      Builds on push and hands the result to a deploy command of your own.
+      https://docs.github.com/actions/reference/workflows-and-actions/workflow-syntax
+    pagesPermissions: pages:write publishes the artifact and id-token:write lets deploy-pages authenticate through OIDC.
+    pagesSetup: Requires Settings > Pages > Source to be set to "GitHub Actions".
+    secrets: Register these under Settings > Secrets and variables > Actions.
+  autoMerge:
+    header: |-
+      Merges Dependabot pull requests once the required checks pass.
+      https://docs.github.com/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+    jobSameWorkflow: Merges only when every check above succeeded and the pull request came from Dependabot.
+    jobNoChecks: |-
+      No check job is enabled, so nothing is waited for: the pull request is merged as soon as it opens.
+    jobBranchProtection: |-
+      Hands the pull request to GitHub's auto-merge, which holds it until the required status checks pass.
+      Needs Allow auto-merge and a branch protection rule on the target branch.
+    permissions: A run triggered by Dependabot gets a read-only GITHUB_TOKEN, so the write scopes are granted here.
+    skipMajor: Major updates are left for a human to review.
+    approve: Only needed when the branch protection rule requires an approval.
+  dependabot:
+    header: |-
+      Automatic dependency updates.
+      https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+    groups: A grouped update arrives as a single pull request, so one green run merges all of it.
+    limitZero: 0 stops version updates entirely; security updates still open pull requests.
+    entry:
+      npm: Node.js dependencies (package.json).
+      github-actions: Actions used by the workflows in .github/workflows.
+      pip: Python dependencies (requirements.txt / pyproject.toml).
+      uv: Python dependencies managed by uv (uv.lock).
+      gradle: Java and Kotlin dependencies (Gradle).
+      maven: Java dependencies (pom.xml).
+      cargo: Rust crates (Cargo.toml).
+      gomod: Go modules (go.mod).
+      composer: PHP packages (composer.json).
+      bundler: Ruby gems (Gemfile).
+      nuget: .NET packages (*.csproj).
+      docker: Base images referenced from Dockerfiles.
+      terraform: Terraform providers and modules.
+      swift: Swift packages (Package.swift).
+      pub: Dart and Flutter packages (pubspec.yaml).
+      mix: Elixir packages (mix.exs).
+      devcontainers: Dev container features (.devcontainer).
