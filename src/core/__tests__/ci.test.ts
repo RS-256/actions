@@ -32,7 +32,7 @@ describe( "generateCi", () => {
   it( "builds a matrix only for two or more node versions", () => {
     const single = parse( render( stateWith() )?.content ?? "" )
     expect( single.jobs.build.strategy ).toBeUndefined()
-    expect( single.jobs.build.steps[ 1 ].with[ "node-version" ] ).toBe( 22 )
+    expect( single.jobs.build.steps[ 1 ].with[ "node-version" ] ).toBe( 24 )
 
     const matrix = parse(
       render(

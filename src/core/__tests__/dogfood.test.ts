@@ -16,7 +16,7 @@ import { stateWith } from "./helpers"
 /** The configuration this repository uses. */
 const ownConfig = ( state: AppState ): void => {
   state.ui.language = "ja_jp"
-  state.common = { packageManager: "npm", nodeVersion: "22", defaultBranch: "main", timezone: "Asia/Tokyo" }
+  state.common = { packageManager: "npm", nodeVersion: "24", defaultBranch: "main", timezone: "Asia/Tokyo" }
   state.ci.jobs = { lint: true, test: true, build: true }
   state.deploy.target = "github-pages"
   state.deploy.outputDir = "dist"

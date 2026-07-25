@@ -50,7 +50,7 @@ export const PACKAGE_MANAGER_IDS: PackageManager[] = [ "npm", "pnpm", "yarn", "b
 /** Sentinel for "read the version from .nvmrc" instead of pinning one. */
 export const NODE_VERSION_FILE = "nvmrc"
 
-export const NODE_VERSIONS = [ "20", "22", "24" ] as const
+export const NODE_VERSIONS = [ "20", "22", "24", "26" ] as const
 
 export const CI_JOB_IDS = [ "lint", "test", "build" ] as const
 

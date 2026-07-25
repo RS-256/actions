@@ -9,7 +9,7 @@ export const createDefaultState = (): AppState => ( {
   ui: { language: "en_us" },
   common: {
     packageManager: "npm",
-    nodeVersion: "22",
+    nodeVersion: "26",
     defaultBranch: "main",
     timezone: "Asia/Tokyo"
   },
@@ -17,7 +17,7 @@ export const createDefaultState = (): AppState => ( {
     enabled: true,
     targetBranches: [ "main" ],
     prTypes: [ "opened", "synchronize", "reopened" ],
-    nodeVersions: [ "22" ],
+    nodeVersions: [ "24" ],
     packageManager: { mode: "inherit" },
     jobs: { lint: false, test: true, build: true },
     concurrency: true
