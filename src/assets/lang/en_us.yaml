@@ -73,6 +73,8 @@ ui:
     labels: Labels
     commitMessagePrefix: Commit message prefix
     ignoreMajor: Ignore major updates
+    ignore: Hold back dependencies
+    ignoreTypes: Ignored for {name}
     autoMergeEnabled: Merge once the checks pass
     strategy: Strategy
     updateTypes: Update types
@@ -129,6 +131,8 @@ help:
     limitZero: A limit of 0 stops version updates entirely. Security updates still open pull requests.
     groupsAutoMerge: Grouped updates arrive as one pull request, so a single green run merges all of them at once.
     ignoreMajor: Dependabot stops opening major-update pull requests at all, which is stricter than leaving them out of auto-merge.
+    ignore: Name the dependencies to hold back, then pick which updates to skip for each. Everything else keeps updating. Patterns such as @types/* are accepted.
+    ignoreAll: No update type is selected, so every update for this dependency is ignored.
   autoMerge:
     needsDependabot: Enable dependabot first.
     sameWorkflow: |-
@@ -190,6 +194,7 @@ yaml:
       https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
     groups: A grouped update arrives as a single pull request, so one green run merges all of it.
     limitZero: 0 stops version updates entirely; security updates still open pull requests.
+    ignore: Deliberately held back. Drop an entry once whatever blocks the update is resolved.
     entry:
       npm: Node.js dependencies (package.json).
       github-actions: Actions used by the workflows in .github/workflows.

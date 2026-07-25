@@ -20,6 +20,11 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # 意図的に更新を止めている依存。追従できるようになったらこの項目を消す。
+    ignore:
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"
   # .github/workflows で使っているアクション。
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -37,3 +42,8 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # 意図的に更新を止めている依存。追従できるようになったらこの項目を消す。
+    ignore:
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"

@@ -87,6 +87,14 @@ export interface AutoMergeConfig {
   approve: boolean
 }
 
+/** One "ignore:" entry: hold back a single dependency without silencing the rest. */
+export interface IgnoreRule {
+  /** Package name; Dependabot also accepts "*" and glob patterns such as "@types/*". */
+  dependencyName: string
+  /** Empty means every update for that dependency is ignored. */
+  updateTypes: UpdateType[]
+}
+
 export interface DependabotConfig {
   enabled: boolean
   ecosystems: { id: Ecosystem; directory: string }[]
@@ -101,6 +109,8 @@ export interface DependabotConfig {
   labels: string[]
   commitMessagePrefix: string
   ignoreMajor: boolean
+  /** Per-dependency holds, emitted next to the ignoreMajor wildcard. */
+  ignore: IgnoreRule[]
   autoMerge: AutoMergeConfig
 }
 

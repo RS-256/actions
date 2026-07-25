@@ -54,6 +54,7 @@ export const createDefaultState = (): AppState => ( {
     labels: [],
     commitMessagePrefix: "",
     ignoreMajor: false,
+    ignore: [],
     autoMerge: {
       enabled: false,
       strategy: "same-workflow",

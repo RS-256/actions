@@ -21,6 +21,8 @@ const ownConfig = ( state: AppState ): void => {
   state.deploy.target = "github-pages"
   state.deploy.outputDir = "dist"
   state.dependabot.commitMessagePrefix = "chore(deps)"
+  // vue-tsc resolves typescript/lib/tsc, which TypeScript 7 no longer exports.
+  state.dependabot.ignore = [ { dependencyName: "typescript", updateTypes: [ "major" ] } ]
   state.dependabot.autoMerge.enabled = true
   state.dependabot.autoMerge.strategy = "same-workflow"
   state.dependabot.autoMerge.updateTypes = [ "minor", "patch" ]

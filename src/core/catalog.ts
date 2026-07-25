@@ -91,6 +91,9 @@ export const WEEKDAYS: Weekday[] = [ "monday", "tuesday", "wednesday", "thursday
 
 export const UPDATE_TYPES: UpdateType[] = [ "minor", "patch", "major" ]
 
+/** How Dependabot spells an update type, both in dependabot.yml and in fetch-metadata output. */
+export const SEMVER_UPDATE_PREFIX = "version-update:semver-"
+
 /** A short list of common zones. Dependabot accepts any IANA name; add more here as needed. */
 export const TIMEZONES = [ "Asia/Tokyo", "UTC", "America/Los_Angeles", "America/New_York", "Europe/London" ]
 

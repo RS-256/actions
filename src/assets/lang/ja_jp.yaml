@@ -73,6 +73,8 @@ ui:
     labels: ラベル
     commitMessagePrefix: コミットメッセージの接頭辞
     ignoreMajor: メジャー更新を無視
+    ignore: 個別に保留する依存
+    ignoreTypes: "{name} で無視する更新"
     autoMergeEnabled: 検査が通ったらマージ
     strategy: 方式
     updateTypes: 対象の更新
@@ -129,6 +131,8 @@ help:
     limitZero: 上限 0 はバージョン更新の停止を意味します。セキュリティ更新の PR は引き続き作られます。
     groupsAutoMerge: まとめられた更新は 1 本の PR になるため、1 度のビルド通過でまとめてマージされます。
     ignoreMajor: メジャー更新の PR 自体が作られなくなります。自動マージの対象から外すより強い設定です。
+    ignore: 保留したい依存の名前を入れて、そのうちどの更新を止めるかを選びます。ほかの依存は通常どおり更新されます。@types/* のようなパターンも使えます。
+    ignoreAll: 対象の更新が 1 つも選ばれていないため、この依存の更新はすべて無視されます。
   autoMerge:
     needsDependabot: dependabot を有効にしてください。
     sameWorkflow: |-
@@ -190,6 +194,7 @@ yaml:
       https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
     groups: まとめられた更新は 1 本の PR になるため、1 度のビルド通過でまとめてマージされる。
     limitZero: 0 はバージョン更新の停止を意味する。セキュリティ更新の PR は引き続き作られる。
+    ignore: 意図的に更新を止めている依存。追従できるようになったらこの項目を消す。
     entry:
       npm: Node.js の依存関係（package.json）。
       github-actions: .github/workflows で使っているアクション。

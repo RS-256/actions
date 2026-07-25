@@ -3,8 +3,8 @@ import { computed } from "vue"
 import { useAppState } from "../../composables/useAppState"
 import { useI18n } from "../../composables/useI18n"
 import { useSections } from "../../composables/useSections"
-import { INTERVALS, TIMEZONES, WEEKDAYS } from "../../core/catalog"
-import type { DependabotConfig, Weekday } from "../../types/config"
+import { INTERVALS, TIMEZONES, UPDATE_TYPES, WEEKDAYS } from "../../core/catalog"
+import type { DependabotConfig, IgnoreRule, UpdateType, Weekday } from "../../types/config"
 import FieldGroup from "../ui/FieldGroup.vue"
 import FieldRow from "../ui/FieldRow.vue"
 import InheritableField from "../ui/InheritableField.vue"
@@ -13,6 +13,7 @@ import SectionCard from "../ui/SectionCard.vue"
 import SelectField from "../ui/SelectField.vue"
 import TagInput from "../ui/TagInput.vue"
 import TextField from "../ui/TextField.vue"
+import ToggleBadge from "../ui/ToggleBadge.vue"
 import ToggleSwitch from "../ui/ToggleSwitch.vue"
 import AutoMergePanel from "./AutoMergePanel.vue"
 import EcosystemPicker from "./EcosystemPicker.vue"
@@ -37,6 +38,28 @@ const limit = computed( {
     dependabot.value.openPullRequestsLimit = Number.isNaN( parsed ) ? 0 : Math.max( 0, parsed )
   }
 } )
+
+/**
+ * The names drive the list; each name keeps its own update types. A new hold
+ * starts at "major", which is the case this exists for - a dependency stuck one
+ * major behind while its minor and patch updates keep coming.
+ */
+const ignoredNames = computed( {
+  get: () => dependabot.value.ignore.map( ( rule ) => rule.dependencyName ),
+  set: ( names: string[] ) => {
+    const previous = dependabot.value.ignore
+    dependabot.value.ignore = names.map(
+      ( name ): IgnoreRule =>
+        previous.find( ( rule ) => rule.dependencyName === name ) ?? { dependencyName: name, updateTypes: [ "major" ] }
+    )
+  }
+} )
+
+const toggleIgnoreType = ( rule: IgnoreRule, type: UpdateType ) => {
+  rule.updateTypes = rule.updateTypes.includes( type )
+    ? rule.updateTypes.filter( ( entry ) => entry !== type )
+    : UPDATE_TYPES.filter( ( entry ) => entry === type || rule.updateTypes.includes( entry ) )
+}
 </script>
 
 <template>
@@ -108,6 +131,24 @@ const limit = computed( {
       </FieldRow>
       <FieldRow :label="t( 'ui.field.ignoreMajor' )" :help="t( 'help.dependabot.ignoreMajor' )">
         <ToggleSwitch v-model="dependabot.ignoreMajor" :aria-label="t( 'ui.field.ignoreMajor' )" />
+      </FieldRow>
+      <FieldRow :label="t( 'ui.field.ignore' )" :help="t( 'help.dependabot.ignore' )">
+        <TagInput v-model="ignoredNames" mono :aria-label="t( 'ui.field.ignore' )" />
+      </FieldRow>
+      <FieldRow
+        v-for="rule in dependabot.ignore"
+        :key="rule.dependencyName"
+        :label="t( 'ui.field.ignoreTypes', { name: rule.dependencyName } )"
+        :help="rule.updateTypes.length === 0 ? t( 'help.dependabot.ignoreAll' ) : undefined"
+      >
+        <ToggleBadge
+          v-for="type in UPDATE_TYPES"
+          :key="type"
+          :label="type"
+          mono
+          :selected="rule.updateTypes.includes( type )"
+          @update:selected="toggleIgnoreType( rule, type )"
+        />
       </FieldRow>
     </FieldGroup>
 

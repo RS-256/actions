@@ -64,7 +64,9 @@ DOM 無しでスナップショットテストが書けるようにしている�
 
 - **TypeScript 7 は入れられない。** TS 7 は `./lib/tsc` を exports から外したが、`vue-tsc` は
   これを `require.resolve` するため、`npm run build`（`vue-tsc -b`）が `ERR_PACKAGE_PATH_NOT_EXPORTED`
-  で落ちる。vue-tsc 3.2.8 と最新の 3.3.8 の両方で確認済み。Volar 側が TS 7 に対応するまで `~6.0.2` で止める
+  で落ちる。vue-tsc 3.2.8 と最新の 3.3.8 の両方で確認済み。Volar 側が TS 7 に対応するまで `~6.0.2` で止める。
+  PR が届かないよう `dogfood.test.ts` の `state.dependabot.ignore` で typescript のメジャー更新だけを
+  ignore している。解消したらこの 1 行を消す（他の依存のメジャー更新は従来どおり届く）
 
 ## ドッグフーディング
 

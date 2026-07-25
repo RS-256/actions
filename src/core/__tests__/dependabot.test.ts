@@ -88,6 +88,80 @@ describe( "generateDependabot", () => {
     expect( bare.updates[ 0 ].ignore ).toBeUndefined()
   } )
 
+  it( "holds back one dependency without touching the others", () => {
+    const tree = parse(
+      render(
+        stateWith( ( s ) => {
+          s.dependabot.ignore = [ { dependencyName: "typescript", updateTypes: [ "major" ] } ]
+        } )
+      )?.content ?? ""
+    )
+    expect( tree.updates[ 0 ].ignore ).toEqual( [
+      { "dependency-name": "typescript", "update-types": [ "version-update:semver-major" ] }
+    ] )
+    expect( tree.updates[ 1 ].ignore ).toEqual( tree.updates[ 0 ].ignore )
+  } )
+
+  it( "writes the wildcard first and the named holds after it", () => {
+    const tree = parse(
+      render(
+        stateWith( ( s ) => {
+          s.dependabot.ignoreMajor = true
+          s.dependabot.ignore = [
+            { dependencyName: "typescript", updateTypes: [ "major" ] },
+            { dependencyName: "@types/*", updateTypes: [ "major", "minor" ] }
+          ]
+        } )
+      )?.content ?? ""
+    )
+    expect( tree.updates[ 0 ].ignore ).toEqual( [
+      { "dependency-name": "*", "update-types": [ "version-update:semver-major" ] },
+      { "dependency-name": "typescript", "update-types": [ "version-update:semver-major" ] },
+      // Catalog order, not the order the update types were selected in.
+      {
+        "dependency-name": "@types/*",
+        "update-types": [ "version-update:semver-minor", "version-update:semver-major" ]
+      }
+    ] )
+  } )
+
+  it( "drops update-types when no type is selected, ignoring the dependency outright", () => {
+    const tree = parse(
+      render(
+        stateWith( ( s ) => {
+          s.dependabot.ignore = [ { dependencyName: "typescript", updateTypes: [] } ]
+        } )
+      )?.content ?? ""
+    )
+    expect( tree.updates[ 0 ].ignore ).toEqual( [ { "dependency-name": "typescript" } ] )
+  } )
+
+  it( "skips holds with a blank name", () => {
+    const off = render(
+      stateWith( ( s ) => {
+        s.dependabot.ignore = [ { dependencyName: "  ", updateTypes: [ "major" ] } ]
+      } )
+    )
+    expect( parse( off?.content ?? "" ).updates[ 0 ].ignore ).toBeUndefined()
+    expect( off?.content ).not.toContain( "held back" )
+  } )
+
+  it( "explains a named hold in a comment but not the bare wildcard", () => {
+    const wildcard = render(
+      stateWith( withLang( "en_us" ), ( s ) => {
+        s.dependabot.ignoreMajor = true
+      } )
+    )
+    expect( wildcard?.content ).not.toContain( "held back" )
+
+    const named = render(
+      stateWith( withLang( "en_us" ), ( s ) => {
+        s.dependabot.ignore = [ { dependencyName: "typescript", updateTypes: [ "major" ] } ]
+      } )
+    )
+    expect( named?.content ).toContain( "# Deliberately held back." )
+  } )
+
   it( "honours a per-ecosystem directory", () => {
     const tree = parse(
       render(

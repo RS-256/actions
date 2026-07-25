@@ -1,5 +1,5 @@
 import type { AppState, PackageManager, UpdateType } from "../../types/config"
-import type { CiJobId } from "../catalog"
+import { type CiJobId, SEMVER_UPDATE_PREFIX } from "../catalog"
 import type { Translator } from "../i18n"
 
 /**
@@ -36,8 +36,6 @@ export const fileHeader = ( ctx: GenContext, key: string ): string | undefined =
   return lines.length > 0 ? lines.join( "\n" ) : undefined
 }
 
-const EXPRESSION_PREFIX = "version-update:semver-"
-
 /**
  * The "if:" guard for the merge step, built from the selected update types.
  * Returns null when every type is allowed, so no guard is emitted at all.
@@ -47,8 +45,8 @@ export const updateTypeCondition = ( types: UpdateType[] ): string | null => {
   if ( selected.size === 0 ) return "false"
   if ( selected.has( "minor" ) && selected.has( "patch" ) && selected.has( "major" ) ) return null
   if ( selected.size === 2 && selected.has( "minor" ) && selected.has( "patch" ) ) {
-    return `steps.metadata.outputs.update-type != '${ EXPRESSION_PREFIX }major'`
+    return `steps.metadata.outputs.update-type != '${ SEMVER_UPDATE_PREFIX }major'`
   }
-  const list = types.map( ( type ) => `${ EXPRESSION_PREFIX }${ type }` )
+  const list = types.map( ( type ) => `${ SEMVER_UPDATE_PREFIX }${ type }` )
   return `contains(fromJSON('${ JSON.stringify( list ) }'), steps.metadata.outputs.update-type)`
 }
