@@ -1,0 +1,37 @@
+{
+  "name": "actions",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check ./src && node scripts/check-ascii.mjs",
+    "lint:fix": "biome check --write ./src",
+    "format": "biome format --write ./src",
+    "check:ascii": "node scripts/check-ascii.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/m-plus-2": "^5.2.8",
+    "@fontsource/m-plus-rounded-1c": "^5.2.8",
+    "jszip": "^3.10.1",
+    "shiki": "^3.14.0",
+    "vue": "^3.5.34",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
+    "@tailwindcss/vite": "^4.1.16",
+    "@types/node": "^24.12.3",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vue/tsconfig": "^0.9.1",
+    "tailwindcss": "^4.1.16",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12",
+    "vitest": "^4.0.0",
+    "vue-tsc": "^3.2.8"
+  }
+}

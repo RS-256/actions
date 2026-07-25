@@ -1,4 +1,13 @@
 docs/gha-template-generator-design.md
 docs/gha-template-generator-spec.md
+docs/DESIGN.md
+docs/actions-mock.html
 
 .claude/
+
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
+.vite/
