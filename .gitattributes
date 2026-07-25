@@ -1,0 +1,9 @@
+# Biome formats with LF. Without eol=lf, a Windows checkout gets CRLF and
+# "npm run lint" fails locally while passing in CI, where the runner is Linux.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
