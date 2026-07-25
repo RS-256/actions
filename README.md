@@ -57,7 +57,14 @@ DOM 無しでスナップショットテストが書けるようにしている�
 
 生成物が使うアクションのメジャーバージョンは `src/core/catalog.ts` の `ACTION_VERSIONS` で一元管理している。
 **Dependabot がこのリポジトリのワークフローを更新した際は、`ACTION_VERSIONS` も合わせて直す。**
-ワークフロー側だけ上げても、生成される YAML は古いままになる。
+`.github/` 以下は生成物なので、ワークフローだけを書き換える PR はドッグフーディングのテストで落ちる。
+直すべきは常に `ACTION_VERSIONS` の側。
+
+## 依存関係で保留しているもの
+
+- **TypeScript 7 は入れられない。** TS 7 は `./lib/tsc` を exports から外したが、`vue-tsc` は
+  これを `require.resolve` するため、`npm run build`（`vue-tsc -b`）が `ERR_PACKAGE_PATH_NOT_EXPORTED`
+  で落ちる。vue-tsc 3.2.8 と最新の 3.3.8 の両方で確認済み。Volar 側が TS 7 に対応するまで `~6.0.2` で止める
 
 ## ドッグフーディング
 
