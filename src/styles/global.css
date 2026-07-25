@@ -1,0 +1,81 @@
+@import "tailwindcss";
+/* Copied from rs256.net (src/styles/tokens.css). Do not edit here - re-sync instead. */
+@import "./tokens.css";
+
+/* Toggle dark mode with the .dark class (supports OS preference and manual toggle). */
+@custom-variant dark ( &:where( .dark, .dark * ) );
+
+@theme inline {
+  --color-base: var( --c-base );
+  --color-surface: var( --c-surface );
+  --color-surface-hover: var( --c-surface-hover );
+  --color-ink: var( --c-ink );
+  --color-muted: var( --c-muted );
+  --color-line: var( --c-line );
+  --color-accent: var( --c-accent );
+  --color-accent-strong: var( --c-accent-strong );
+  --color-accent-soft: var( --c-accent-soft );
+
+  /* Category colors from the parent site, reused for status banners. */
+  --color-info-field: var( --cat-web-tools-field );
+  --color-info-ink: var( --cat-web-tools-ink );
+  --color-warn-field: var( --cat-scripts-field );
+  --color-warn-ink: var( --cat-scripts-ink );
+  --color-ok-field: var( --cat-minecraft-mods-field );
+  --color-ok-ink: var( --cat-minecraft-mods-ink );
+
+  --font-sans: "M PLUS 2 Variable", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  --font-display: "M PLUS Rounded 1c", "M PLUS 2 Variable", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var( --c-base );
+  /* Add texture with a very subtle dot grid. */
+  background-image: radial-gradient( var( --c-dot ) 1px, transparent 1px );
+  background-size: 26px 26px;
+  color: var( --c-ink );
+  font-family: var( --font-sans );
+  /* 14px base: this is an application, not a marketing page. */
+  font-size: 14px;
+  line-height: 1.7;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+/* Visible keyboard focus ring on all interactive elements. */
+:focus-visible {
+  outline: 2px solid var( --c-accent-strong );
+  outline-offset: 2px;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}
+
+/*
+ * Shiki dual-theme output. The highlighter emits both colors as CSS variables,
+ * so switching themes needs no re-highlight.
+ */
+.shiki,
+.shiki span {
+  color: var( --shiki-light );
+  background-color: transparent !important;
+}
+.dark .shiki,
+.dark .shiki span {
+  color: var( --shiki-dark );
+}
