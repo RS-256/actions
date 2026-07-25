@@ -1,0 +1,36 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`auto-merge placement > snapshot: standalone auto-merge workflow, ja 1`] = `
+"# https://rs256.net/actions/ で生成。自由に編集してよい。
+# 検査が通った Dependabot の PR を自動でマージする。
+# https://docs.github.com/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+name: Dependabot auto-merge
+on:
+  pull_request:
+# 既定は権限なし。各ジョブで必要な分だけ付与する。
+permissions: {}
+jobs:
+  # GitHub の auto-merge に載せ、必須ステータスチェックの通過まで待たせる。
+  # Allow auto-merge と対象ブランチのブランチ保護ルールが前提。
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    # Dependabot 起点の実行では GITHUB_TOKEN が既定 read-only のため、ここで明示的に付与する。
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v3
+        with:
+          github-token: "\${{ secrets.GITHUB_TOKEN }}"
+      # メジャー更新は自動マージせず人力レビューに回す。
+      - name: Merge
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: "\${{ github.event.pull_request.html_url }}"
+          GH_TOKEN: "\${{ secrets.GITHUB_TOKEN }}"
+"
+`;
