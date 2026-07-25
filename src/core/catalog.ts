@@ -7,8 +7,8 @@ import type { Ecosystem, Interval, PackageManager, UpdateType, Weekday } from ".
  */
 export const ACTION_VERSIONS = {
   checkout: "v7",
-  setupNode: "v4",
-  uploadPagesArtifact: "v3",
+  setupNode: "v7",
+  uploadPagesArtifact: "v5",
   deployPages: "v5",
   fetchMetadata: "v3",
   withastro: "v6",

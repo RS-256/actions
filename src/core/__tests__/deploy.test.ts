@@ -36,10 +36,10 @@ describe( "generateDeploy", () => {
           "runs-on": "ubuntu-latest",
           steps: [
             { name: "Checkout", uses: "actions/checkout@v7" },
-            { name: "Setup Node", uses: "actions/setup-node@v4", with: { "node-version": 24, cache: "npm" } },
+            { name: "Setup Node", uses: "actions/setup-node@v7", with: { "node-version": 24, cache: "npm" } },
             { name: "Install dependencies", run: "npm ci" },
             { name: "Build", run: "npm run build" },
-            { name: "Upload artifact", uses: "actions/upload-pages-artifact@v3", with: { path: "dist" } }
+            { name: "Upload artifact", uses: "actions/upload-pages-artifact@v5", with: { path: "dist" } }
           ]
         },
         deploy: {
@@ -75,10 +75,10 @@ describe( "generateDeploy", () => {
     expect( tree.jobs.build.steps.map( ( step: { uses?: string; run?: string } ) => step.uses ?? step.run ) ).toEqual( [
       "actions/checkout@v7",
       "pnpm/action-setup@v4",
-      "actions/setup-node@v4",
+      "actions/setup-node@v7",
       "pnpm install --frozen-lockfile",
       "pnpm build",
-      "actions/upload-pages-artifact@v3"
+      "actions/upload-pages-artifact@v5"
     ] )
   } )
 
